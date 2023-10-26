@@ -4,11 +4,11 @@
   
     
     <entry>
-      <title>demo</title>
-      <link href="/2023/10/19/demo/"/>
-      <url>/2023/10/19/demo/</url>
+      <title>驱动开发入门</title>
+      <link href="/2023/10/26/%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/"/>
+      <url>/2023/10/26/%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/</url>
       
-        <content type="html"><![CDATA[<h1 id="尝试一下创建blog"><a href="#尝试一下创建blog" class="headerlink" title="尝试一下创建blog"></a>尝试一下创建blog</h1>]]></content>
+        <content type="html"><![CDATA[<h2 id="编写驱动步骤"><a href="#编写驱动步骤" class="headerlink" title="编写驱动步骤"></a>编写驱动步骤</h2><ol><li>确定主设备号</li><li>定义自己的<code>file_operator</code>结构体</li><li>实现对应的<code>open\read\write</code>等函数，填入<code>file_operator</code>结构体</li><li>把<code>file_operator</code>结构体告诉内核：注册驱动程序</li><li>入口函数：安装驱动程序时就会调用该入口函数</li><li>出口函数：卸载驱动程序时，就会调用该出口函数</li><li>其他完善：提供设备信息，自动创建设备节点</li></ol>]]></content>
       
       
       
