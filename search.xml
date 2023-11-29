@@ -4,13 +4,38 @@
   
     
     <entry>
+      <title>异常与中断</title>
+      <link href="/2023/11/29/%E5%BC%82%E5%B8%B8%E4%B8%8E%E4%B8%AD%E6%96%AD/"/>
+      <url>/2023/11/29/%E5%BC%82%E5%B8%B8%E4%B8%8E%E4%B8%AD%E6%96%AD/</url>
+      
+        <content type="html"><![CDATA[<h1>异常与中断的概念与处理流程</h1><p><img src="image-20231129164249697.png" alt="image-20231129164249697"></p><ol><li>中断源</li><li>中断控制器</li><li>CPU</li></ol><h2 id="arm对异常-中断-处理过程：">arm对异常(中断)处理过程：</h2><ol><li><p>初始化：</p><blockquote><ol><li>设置中断源</li><li>设置中断控制器</li><li>设置CPU总开关（使能中断）</li></ol></blockquote></li><li><p>执行其他程序</p></li><li><p>产生中断：比如按下按键 --&gt; 中断控制器 --&gt; CPU</p></li><li><p>CPU每执行完一条指令都会检查有无中断/异常产生</p></li><li><p>CPU发现由中断/异常产生，开始处理。</p><blockquote><p>对于不同的异常，跳去不同的地址执行程序。该地址只有一条跳转指令，跳去执行某个函数（地址），这个就是<strong>异常向量</strong>。</p><p>异常向量表包含了一组异常处理程序的入口地址，每个异常（中断、故障等）对应一个地址。当中断发生时，处理器会从异常向量表中找到相应的地址并跳转到那里执行。</p><p>异常向量表的起始地址通常是在处理器启动时设置的，而不是出厂时。这个地址可以在启动过程中的初始化代码中设置。</p></blockquote></li><li><p>跳转的函数执行：</p><blockquote><ol><li>保存现场（各种寄存器）</li><li>处理异常（中断）：分辨中断源，再调用不同的处理函数，处理异常的代码通常称为异常处理例程，它会根据异常类型（中断、故障等）分发到相应的处理函数。</li><li>恢复现场</li></ol></blockquote></li></ol><blockquote><p><strong>注意：上面的3，4，5都是硬件做的。</strong></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>笔记--Linux设备驱动开发详解</title>
       <link href="/2023/11/17/%E7%AC%94%E8%AE%B0-Linux%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E8%AF%A6%E8%A7%A3/"/>
       <url>/2023/11/17/%E7%AC%94%E8%AE%B0-Linux%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E8%AF%A6%E8%A7%A3/</url>
       
-        <content type="html"><![CDATA[<h1>概述</h1><p><img src="image-20231117114308618.png" alt="image-20231117114308618"></p><p><strong>用户空间与内核空间的交互</strong></p><ul><li>应用程序可以使用Linux 的系统调用接口编程，但也可使用C 库函数。一般都是用后者。</li></ul><p><strong>C标准库与POSIX库</strong></p><ul><li>C标准库和POSIX库都是在不同层次上提供了对操作系统功能的封装，但它们的目标和功能有所不同。</li><li>在层次结构上，可以说POSIX库在某种程度上是C标准库的扩展，增加了对系统级别的支持。因此，可以认为POSIX库更高级，因为它提供了更多的功能，但也更加特定于操作系统。</li></ul><h1>Linux 设备驱动的重点、难点</h1><ul><li>编写 Linux 设备驱动要求工程师有非常好的硬件基础，<strong>懂得 SRAM、Flash、SDRAM、</strong><br><strong>磁盘的读写方式，UART、I2C、USB 等设备的接口以及轮询、中断、DMA 的原理，</strong><br>**PCI 总线的工作方式以及CPU 的内存管理单元（MMU）**等。</li><li>编写 Linux 设备驱动要求工程师有非常好的 C 语言基础，能灵活地运用 C 语言的结<br>构体、指针、函数指针及<strong>内存动态申请和释放</strong>等。</li><li>编写 Linux 设备驱动要求工程师有一定的 Linux 内核基础，虽然并不要求工程师对<br>内核各个部分有深入的研究，但<strong>至少要明白驱动与内核的接口。尤其是对于块设</strong><br>**备、网络设备、Flash 设备、串口设备等复杂设备，**内核定义的驱动体系结构本身就<br>非常复杂。</li><li>编写 Linux 设备驱动要求工程师<strong>有非常好的多任务并发控制和同步的基础，因为在驱</strong><br><strong>动中会大量使用自旋锁、互斥、信号量、等待队列等并发与同步机制。</strong></li></ul>]]></content>
+        <content type="html"><![CDATA[<h1>概述</h1><p><img src="image-20231117114308618.png" alt="image-20231117114308618"></p><p><strong>用户空间与内核空间的交互</strong></p><ul><li>应用程序可以直接使用Linux 的系统调用，也可使用C 库函数。一般都是用后者。</li></ul><p><strong>C标准库与POSIX库</strong></p><ul><li>C标准库和POSIX库都是在不同层次上提供了对操作系统功能的封装，但它们的目标和功能有所不同。</li><li>在层次结构上，可以说POSIX库在某种程度上是C标准库的扩展，增加了对系统级别的支持。因此，可以认为POSIX库更高级，因为它提供了更多的功能，但也更加特定于操作系统。</li></ul><h1>Linux 设备驱动的重点、难点</h1><ul><li>编写 Linux 设备驱动要求工程师有非常好的硬件基础，**懂得 SRAM、Flash、SDRAM、<br>磁盘的读写方式，UART、I2C、USB 等设备的接口以及轮询、中断、DMA 的原理，<br>PCI 总线的工作方式以及CPU 的内存管理单元（MMU）**等。</li><li>编写 Linux 设备驱动要求工程师有非常好的 C 语言基础，能灵活地运用 C 语言的结<br>构体、指针、函数指针及<strong>内存动态申请和释放</strong>等。</li><li>编写 Linux 设备驱动要求工程师有一定的 Linux 内核基础，虽然并不要求工程师对<br>内核各个部分有深入的研究，但**至少要明白驱动与内核的接口。尤其是对于块设<br>备、网络设备、Flash 设备、串口设备等复杂设备，**内核定义的驱动体系结构本身就<br>非常复杂。</li><li>编写 Linux 设备驱动要求工程师<strong>有非常好的多任务并发控制和同步的基础，因为在驱<br>动中会大量使用自旋锁、互斥、信号量、等待队列等并发与同步机制。</strong></li></ul>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
       
     </entry>
     
