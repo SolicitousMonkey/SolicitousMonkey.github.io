@@ -4,11 +4,68 @@
   
     
     <entry>
+      <title>用户线程和内核线程区别</title>
+      <link href="/2023/12/04/%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B%E5%8C%BA%E5%88%AB/"/>
+      <url>/2023/12/04/%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B%E5%8C%BA%E5%88%AB/</url>
+      
+        <content type="html"><![CDATA[<h3 id="用户线程：">用户线程：</h3><ol><li><strong>创建和管理：</strong> 用户线程是由用户空间的应用程序创建和管理的。用户线程的创建、调度和销毁完全由用户程序的线程库（用户级线程库）负责，而不需要内核的干预。</li><li><strong>轻量级：</strong> 用户线程是轻量级的，它们的创建和上下文切换开销相对较小。因为这些线程的管理是在用户空间进行的，不需要内核介入。</li><li><strong>阻塞：</strong> 当用户线程中的一个线程被阻塞时，整个进程可能被阻塞，因为内核不了解和不管理用户线程的阻塞状态。</li><li><strong>调度：</strong> 用户线程的调度是由用户级线程库实现的，通常是基于协作式调度（cooperative scheduling）。这意味着一个用户线程在执行期间可以主动让出 CPU 控制权。</li><li><strong>无法利用多核：</strong> 由于用户线程的调度是在用户空间完成的，内核无法将不同的用户线程分配到不同的核上运行，因此用户线程不能充分利用多核处理器的优势。</li></ol><h3 id="内核线程：">内核线程：</h3><ol><li><strong>创建和管理：</strong> 内核线程是由操作系统内核创建和管理的。内核线程的创建和销毁由内核负责，而不需要用户空间的干预。</li><li><strong>重量级：</strong> 内核线程是相对重量级的，因为它们的创建和上下文切换涉及到内核的介入。这导致了相对较高的开销。</li><li><strong>阻塞：</strong> 当一个内核线程被阻塞时，通常只影响到该线程，而不会影响整个进程。其他内核线程仍然可以在系统中执行。</li><li><strong>调度：</strong> 内核线程的调度是由操作系统内核的调度器实现的，通常是基于抢占式调度（preemptive scheduling）。这意味着内核线程可以被强制剥夺 CPU 控制权。</li><li><strong>多核利用：</strong> 内核线程可以更好地利用多核处理器，因为内核可以将不同的内核线程分配给不同的核。</li></ol><h3 id="总结：">总结：</h3><ul><li>用户线程更轻量级，由用户程序自己的线程库管理，但在阻塞和调度方面有一些限制。</li><li>内核线程更重量级，由操作系统内核管理，提供更好的阻塞和调度支持，并且能够更好地利用多核处理器。</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>进程上下文与中断上下文的区别</title>
+      <link href="/2023/12/04/%E8%BF%9B%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8E%E4%B8%AD%E6%96%AD%E4%B8%8A%E4%B8%8B%E6%96%87%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+      <url>/2023/12/04/%E8%BF%9B%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8E%E4%B8%AD%E6%96%AD%E4%B8%8A%E4%B8%8B%E6%96%87%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      
+        <content type="html"><![CDATA[<h4 id="1-上下文切换触发时机：">1. 上下文切换触发时机：</h4><ul><li><strong>进程上下文：</strong> 进程上下文是在内核中执行进程代码时的执行环境。它通常由系统调用、中断、异常或调度程序引起。在进程上下文中，内核代码运行在进程的地址空间中。</li><li><strong>中断上下文：</strong> 中断上下文是在响应硬件中断时执行的上下文。硬件中断可以来自外部设备或是软中断触发的。中断上下文执行的代码是内核中的中断服务程序。</li></ul><h4 id="2-实时性要求：">2. 实时性要求：</h4><ul><li><strong>进程上下文：</strong> 进程上下文不要求实时性，允许较长时间的执行。因为进程上下文的切换是由操作系统的调度器控制的，可以在较长的时间间隔内完成。</li><li><strong>中断上下文：</strong> 中断上下文通常需要满足实时性的要求，因为中断服务程序必须迅速响应硬件中断。中断上下文中执行的代码应该尽量保持简短和快速。</li></ul><h4 id="3-中断屏蔽：">3. 中断屏蔽：</h4><ul><li><strong>进程上下文：</strong> 进程上下文中，中断是可以被屏蔽的。这意味着在进程上下文中执行的代码可以选择屏蔽中断，以防止中断干扰。</li><li><strong>中断上下文：</strong> 中断上下文是在中断时执行的，中断是不能被屏蔽的。中断服务程序必须响应中断，并且中断服务程序执行期间其他中断是被屏蔽的，以防止嵌套中断。</li></ul><h4 id="4-执行环境：">4. 执行环境：</h4><ul><li><strong>进程上下文：</strong> 进程上下文中，内核代码可以访问用户空间的地址空间，执行用户空间和内核空间的代码。</li><li><strong>中断上下文：</strong> 中断上下文中，内核代码只能访问内核空间，不能执行用户空间的代码。</li></ul><h4 id="5-响应性：">5. 响应性：</h4><ul><li><strong>进程上下文：</strong> 进程上下文的切换可以由操作系统的调度器控制，因此响应性较低。进程上下文切换可能需要等待调度器的调度决策。</li><li><strong>中断上下文：</strong> 中断上下文是由硬件中断引起的，响应性较高。中断服务程序迅速响应中断，不需要等待调度器。</li></ul><h4 id="总结：">总结：</h4><ul><li>进程上下文用于执行较长时间的内核代码，对实时性要求较低。</li><li>中断上下文用于迅速响应硬件中断，对实时性有较高的要求。</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Linux中断编程</title>
+      <link href="/2023/12/04/Linux%E4%B8%AD%E6%96%AD%E7%BC%96%E7%A8%8B/"/>
+      <url>/2023/12/04/Linux%E4%B8%AD%E6%96%AD%E7%BC%96%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h4 id="申请和释放中断">申请和释放中断</h4><p>在Linux设备驱动中，使用中断的设备需要<strong>申请</strong>和<strong>释放</strong>对应的中断。</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 申请中断</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">request_irq</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> irq, <span class="type">irq_handler_t</span> handler, <span class="type">unsigned</span> <span class="type">long</span> flags, <span class="type">const</span> <span class="type">char</span> *name, <span class="type">void</span> *dev)</span>;</span><br></pre></td></tr></table></figure><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 释放irq</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">free_irq</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> irq, <span class="type">void</span> *dev_id)</span>;</span><br></pre></td></tr></table></figure><h4 id="底半部机制">底半部机制</h4><p>Linux实现底半部的机制主要有tasklet、工作队列、软中断、线程化irq；</p><h5 id="tasklet">tasklet</h5><p>tasklet的执行上下文是软中断，执行时机通常是顶半部返回的时候。</p><blockquote><p>软中断的执行相对于硬中断而言，更加灵活、不需要严格的实时性，并且能够在内核中执行较长时间的任务。</p></blockquote><p>使用 <code>tasklet</code> 时，一般的流程是：</p><ol><li><p><strong>注册 <code>tasklet</code>：</strong> 在驱动程序初始化阶段，通过 <code>tasklet_init()</code> 函数初始化一个 <code>tasklet</code> 结构，并通过 <code>tasklet_init()</code> 函数将其注册到内核中。</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tasklet_struct</span> <span class="title">my_tasklet</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">my_tasklet_function</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 执行 tasklet 相关的处理逻辑</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在初始化阶段注册 tasklet</span></span><br><span class="line">tasklet_init(&amp;my_tasklet, my_tasklet_function, <span class="number">0</span>);</span><br></pre></td></tr></table></figure></li><li><p><strong>触发 <code>tasklet</code>：</strong> 当驱动程序需要执行与 <code>tasklet</code> 相关的工作时，调用 <code>tasklet_schedule()</code> 函数触发 <code>tasklet</code> 的执行。</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在需要的时候触发 tasklet 执行</span></span><br><span class="line">tasklet_schedule(&amp;my_tasklet);</span><br></pre></td></tr></table></figure></li><li><p><strong>处理函数执行：</strong> 当内核下一次进入软中断上下文时，内核会检查 <code>tasklet</code> 的状态，如果处于待运行状态，就执行与之关联的处理函数。</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">my_interrupt_handler</span><span class="params">(<span class="type">int</span> irq, <span class="type">void</span> *dev_id)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 处理中断的逻辑</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 触发 tasklet 执行</span></span><br><span class="line">    tasklet_schedule(&amp;my_tasklet);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol><p>总体来说，<code>tasklet_schedule()</code> 的作用是标记一个 <code>tasklet</code> 为待运行状态，以便在适当的上下文中执行与之相关的处理函数。这有助于避免在中断上下文中执行耗时的操作，从而提高系统的响应性。</p><h5 id="工作队列">工作队列</h5><p>工作队列的使用方法和<code>tasklet</code>非常相似，但是工作队列的执行上下文是内核线程，因此可以调度和睡眠。</p><p>使用 <code>工作队列</code> 时，一般的流程是：</p><ol><li><p><strong>注册工作队列：</strong> 定义一个工作队列和底半部执行函数</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">work_struct</span> <span class="title">my_work</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">my_work_function</span><span class="params">(<span class="keyword">struct</span> work_struct *work)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 执行工作队列中的任务</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p><strong>初始化和调度：</strong> 通过调用 <code>INIT_WORK</code> 宏将工作结构和处理函数关联，并通过 <code>schedule_work</code> 或 <code>queue_work</code> 函数将工作结构插入工作队列，以便在后台执行相关处理函数。</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">INIT_WORK(&amp;my_work, my_work_function);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调度工作队列执行</span></span><br><span class="line">schedule_work(&amp;my_work);</span><br></pre></td></tr></table></figure></li></ol><h5 id="软中断">软中断</h5><p>软中断(Softirq)也是一种传统的底半部处理机制，它的执行时机通常是顶半部返回的时候，tasklet是基于软中断实现的，因此也运行于软中断上下文。</p><h5 id="threaded-irq">threaded_irq</h5><p><code>threaded_irq</code> 函数是 Linux 内核中用于注册<strong>线程化中断处理程序（threaded interrupt handler）的函数。</strong></p><ol><li><strong>上下文执行环境：</strong> <code>threaded_irq</code> 注册的中断处理程序在线程上下文中执行。线程上下文是在进程上下文中执行的，不要求严格的实时性，因此可以执行较长时间的任务。</li><li><strong>处理程序类型：</strong> <code>threaded_irq</code> 注册的中断处理程序是一个线程化中断处理程序。这意味着它可以执行较长时间的任务，而不会阻塞中断线。</li><li><strong>不阻塞中断线：</strong> 当 <code>threaded_irq</code> 注册的中断处理程序正在执行时，不会阻塞同一中断线上的其他中断处理程序。这允许多个中断处理程序并发执行。</li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>异常与中断</title>
       <link href="/2023/11/29/%E5%BC%82%E5%B8%B8%E4%B8%8E%E4%B8%AD%E6%96%AD/"/>
       <url>/2023/11/29/%E5%BC%82%E5%B8%B8%E4%B8%8E%E4%B8%AD%E6%96%AD/</url>
       
-        <content type="html"><![CDATA[<h1>异常与中断的概念与处理流程</h1><p><img src="image-20231129164249697.png" alt="image-20231129164249697"></p><ol><li>中断源</li><li>中断控制器</li><li>CPU</li></ol><h2 id="arm对异常-中断-处理过程：">arm对异常(中断)处理过程：</h2><ol><li><p>初始化：</p><blockquote><ol><li>设置中断源</li><li>设置中断控制器</li><li>设置CPU总开关（使能中断）</li></ol></blockquote></li><li><p>执行其他程序</p></li><li><p>产生中断：比如按下按键 --&gt; 中断控制器 --&gt; CPU</p></li><li><p>CPU每执行完一条指令都会检查有无中断/异常产生</p></li><li><p>CPU发现由中断/异常产生，开始处理。</p><blockquote><p>对于不同的异常，跳去不同的地址执行程序。该地址只有一条跳转指令，跳去执行某个函数（地址），这个就是<strong>异常向量</strong>。</p><p>异常向量表包含了一组异常处理程序的入口地址，每个异常/中断对应一个地址。当中断发生时，处理器会从异常向量表中找到相应的地址并跳转到那里执行。</p></blockquote></li><li><p>跳转的函数执行：</p><blockquote><ol><li>保存现场：各种寄存器</li><li>处理异常/中断：分辨中断源，再调用不同的处理函数。</li><li>恢复现场</li></ol></blockquote></li></ol><blockquote><p><strong>注意：上面的3，4，5都是硬件做的。</strong></p></blockquote><h2 id="Linux中断程序架构">Linux中断程序架构</h2><p><strong>中断处理原则</strong></p><ol><li>中断不能嵌套</li><li>中断处理时间越快越好</li></ol><p>但是由于中断处理程序通常比较耗时，Linux将中断处理程序分别两个半部：<strong>上半部</strong>和<strong>下半部</strong></p><p><img src="image-20231130154431818.png" alt="image-20231130154431818"></p><ul><li><p>上半部用于完成尽量少的比较紧急的任务。<strong>（通常被设计为不可被新的中断打断）</strong></p><blockquote><p>通常只是简单读取寄存器的中断状态，并在清除中断标志位后进行“登记中断“的工作，”登记中断“意味着将底半部处理程序挂到该设备的底半部执行队列中去。</p></blockquote></li><li><p>底半部几乎做了中断处理程序的所有事情。<strong>（通常被设计为可以被新的中断打断）</strong></p></li></ul><h2 id="Linux中断编程">Linux中断编程</h2><p>在Linux设备驱动中，使用中断的设备需要<strong>申请</strong>和<strong>释放</strong>对应的中断，并分别使用内核提供的<code>request_irq()</code>和<code>free_irq()</code></p>]]></content>
+        <content type="html"><![CDATA[<h4 id="异常与中断的概念与处理流程">异常与中断的概念与处理流程</h4><p><img src="image-20231129164249697.png" alt="image-20231129164249697"></p><ol><li>中断源</li><li>中断控制器</li><li>CPU</li></ol><h4 id="arm对异常-中断-处理过程：">arm对异常(中断)处理过程：</h4><ol><li><p>初始化：</p><blockquote><ol><li>设置中断源</li><li>设置中断控制器</li><li>设置CPU总开关（使能中断）</li></ol></blockquote></li><li><p>执行其他程序</p></li><li><p>产生中断：比如按下按键 --&gt; 中断控制器 --&gt; CPU</p></li><li><p>CPU每执行完一条指令都会检查有无中断/异常产生</p></li><li><p>CPU发现由中断/异常产生，开始处理。</p><blockquote><p>对于不同的异常，跳去不同的地址执行程序。该地址只有一条跳转指令，跳去执行某个函数（地址），这个就是<strong>异常向量</strong>。</p><p>异常向量表包含了一组异常处理程序的入口地址，每个异常/中断对应一个地址。当中断发生时，处理器会从异常向量表中找到相应的地址并跳转到那里执行。</p></blockquote></li><li><p>跳转的函数执行：</p><blockquote><ol><li>保存现场：各种寄存器</li><li>处理异常/中断：分辨中断源，再调用不同的处理函数。</li><li>恢复现场</li></ol></blockquote></li></ol><blockquote><p><strong>注意：上面的3，4，5都是硬件做的。</strong></p></blockquote><h4 id="Linux中断程序架构">Linux中断程序架构</h4><p><strong>中断处理原则</strong></p><ol><li>中断不能嵌套</li><li>中断处理时间越快越好</li></ol><p>但是由于中断处理程序通常比较耗时，Linux将中断处理程序分别两个半部：<strong>上半部</strong>和<strong>下半部</strong></p><p><img src="image-20231130154431818.png" alt="image-20231130154431818"></p><ul><li><p>上半部用于完成尽量少的比较紧急的任务。<strong>（通常被设计为不可被新的中断打断）</strong></p><blockquote><p>通常只是简单读取寄存器的中断状态，并在清除中断标志位后进行“登记中断“的工作，”登记中断“意味着将底半部处理程序挂到该设备的底半部执行队列中去。</p></blockquote></li><li><p>底半部几乎做了中断处理程序的所有事情。<strong>（通常被设计为可以被新的中断打断）</strong></p></li></ul>]]></content>
       
       
       
