@@ -4,11 +4,30 @@
   
     
     <entry>
+      <title>SPI深入剖析</title>
+      <link href="/2023/12/06/SPI/"/>
+      <url>/2023/12/06/SPI/</url>
+      
+        <content type="html"><![CDATA[<h4 id=""></h4><h3 id="SPI深入剖析">SPI深入剖析</h3><ul><li><p>SPI是同步通信协议</p></li><li><p>SPI接口有4条数据线：SCKSSMOSI　MISO</p></li></ul><h4 id="SPI-通信流程"><strong>SPI 通信流程</strong></h4><p>主设备选通一个或多个从设备，将 SS 线拉低，以确定通信目标。</p><p>主设备通过 SCLK 线产生时钟信号，驱动数据在 MOSI 上发送给从设备。</p><p>从设备根据时钟信号，在 MISO 上将响应数据返回给主设备。</p><p>通信完成后，主设备将 SS 线拉高，释放从设备。</p><h4 id="时钟极性（CPOL）与时钟相位（CPHA）">时钟极性（CPOL）与时钟相位（CPHA）</h4><p>SPI通信可以配置为不同的时钟极性和相位。</p><p>时钟极性定义时钟在空闲状态时的电平</p><ul><li>如果CPOL= 0，串行同步时钟的空闲状态为低电平；</li><li>如果CPOL= 1，串行同步时钟的空闲状态为高电平。</li></ul><p>时钟相位定义数据采样的时机</p><ul><li><p>如果CPHA= 0，在串行同步时钟的第一个跳变沿（上升或下降）数据被采样；</p></li><li><p>如果CPHA = 1，在串行同步时钟的第二个跳变沿（上升或下降）数据被采样。</p></li></ul><p><img src="image-20231211102038775.png" alt="image-20231211102038775"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>IIC深入剖析</title>
       <link href="/2023/12/06/IIC/"/>
       <url>/2023/12/06/IIC/</url>
       
-        <content type="html"><![CDATA[<h3 id="I2C总线与I2C通信协议的区别">I2C总线与I2C通信协议的区别</h3><ul><li><p><strong>I2C总线是硬件概念：</strong> I2C总线是<strong>物理连接设备的电缆和线路</strong>。它提供了设备之间进行串行通信的基础结构。</p></li><li><p><strong>I2C协议是通信规则：</strong> I2C协议定义了在I2C总线上设备之间如何进行<strong>通信的规则</strong>。它规定了数据的传输格式、起始和停止条件、时钟频率等。</p></li></ul><h3 id="IIC详解">IIC详解</h3><p>IIC是多主机的半双工同步通信协议，<strong>数据线SDA</strong>和<strong>时钟线SCL</strong>构成。</p><blockquote><ol><li>各设备连接到总线的输出端必须是<strong>开漏输出</strong>或集电极开路输出的结构</li><li>在任意时刻只能有一个主控</li></ol></blockquote><p>空闲状态，上拉电阻使SDA和SCL信号线同时处于高电平；</p><p>由于**”线与“**逻辑，I2C总线上任意器件输出低电平都会使相应总线上的信号线变低；</p><h4 id="开始位和停止位">开始位和停止位</h4><p>当SCL 稳定在高电平时，SDA 由高到低的变化将产生一个开始位，而由低到高的变化，则产生一个停止位。</p><p><img src="/image-20231211210806975.png" alt="image-20231211210806975"></p><ul><li>开始位和停止位都由I2C 主设备产生。</li></ul><p>在选择从设备时，如果从设备采用7 位地址，则主设备在发起传输过程前，需先发送1 字节的地址信息，前7 位为设备地址，最后1 位为读写标志。之后，每次传输的数据也是1字节，从MSB 开始传输。</p><p>每个字节传完后，在SCL的第9个上升沿到来之前，接收方应该发出1个ACK 位。</p><blockquote><ol><li><p>SCL 上的时钟脉冲由I2C主控方发出</p></li><li><p>在第8个时钟周期之后，主控方应该释放<strong>SDA</strong>。(因为要让给从机响应ACK)</p></li></ol></blockquote><p><img src="/image-20231211211114744.png" alt="image-20231211211114744"></p>]]></content>
+        <content type="html"><![CDATA[<h3 id="I2C总线与I2C通信协议的区别">I2C总线与I2C通信协议的区别</h3><ul><li><p><strong>I2C总线是硬件概念：</strong> I2C总线是<strong>物理连接设备的电缆和线路</strong>。它提供了设备之间进行串行通信的基础结构。</p></li><li><p><strong>I2C协议是通信规则：</strong> I2C协议定义了在I2C总线上设备之间如何进行<strong>通信的规则</strong>。它规定了数据的传输格式、起始和停止条件、时钟频率等。</p></li></ul><h3 id="IIC详解">IIC详解</h3><p>IIC是多主机的半双工同步通信协议，<strong>数据线SDA</strong>和<strong>时钟线SCL</strong>构成。</p><blockquote><ol><li>各设备连接到总线的输出端必须是<strong>开漏输出</strong>或集电极开路输出的结构</li><li>在任意时刻只能有一个主控</li></ol></blockquote><p>空闲状态，上拉电阻使SDA和SCL信号线同时处于高电平；</p><p>由于**”线与“**逻辑，I2C总线上任意器件输出低电平都会使相应总线上的信号线变低；</p><h4 id="开始位和停止位">开始位和停止位</h4><p>当SCL 稳定在高电平时，SDA 由高到低的变化将产生一个开始位，而由低到高的变化，则产生一个停止位。</p><p><img src="image-20231211210806975.png" alt="image-20231211210806975"></p><ul><li>开始位和停止位都由I2C 主设备产生。</li></ul><p>在选择从设备时，如果从设备采用7 位地址，则主设备在发起传输过程前，需先发送1 字节的地址信息，前7 位为设备地址，最后1 位为读写标志。之后，每次传输的数据也是1字节，从MSB 开始传输。</p><p>每个字节传完后，在SCL的第9个上升沿到来之前，接收方应该发出1个ACK 位。</p><blockquote><ol><li><p>SCL 上的时钟脉冲由I2C主控方发出</p></li><li><p>在第8个时钟周期之后，主控方应该释放<strong>SDA</strong>。(因为要让给从机响应ACK)</p></li></ol></blockquote><p><img src="image-20231211211114744.png" alt="image-20231211211114744"></p>]]></content>
       
       
       
