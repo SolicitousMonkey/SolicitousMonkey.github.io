@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>同步与异步</title>
+      <link href="/2023/12/12/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/"/>
+      <url>/2023/12/12/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/</url>
+      
+        <content type="html"><![CDATA[<h3 id="同步与异步">同步与异步</h3><p><strong>同步</strong>（即阻塞模式）：<strong>同步通信的双方需要频率一致的时钟。</strong>（如IIC，SPI）</p><p><strong>异步</strong>（即非阻塞模式）：<strong>异步通信的双方使用各自的时钟</strong>（如UART），接收方是通过识别数据包中的起始位和结束位来实现信息同步的。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>UART深入剖析</title>
+      <link href="/2023/12/07/UART%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90/"/>
+      <url>/2023/12/07/UART%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90/</url>
+      
+        <content type="html"><![CDATA[<h3 id="UART深入剖析">UART深入剖析</h3><p><strong>UART</strong>是一种串行、异步、全双工的通信协议。</p><p>UART由三根数据线构成：TXRXGND</p><ul><li><p>**空闲位：**空闲状态时信号线为高电平</p></li><li><p>**起始位：**发送方先发出低电平，表示传输字符的开始。</p></li><li><p><strong>数据位：<strong>起始位之后就是我们所要传输的数据，数据位可以是5、6、7、8，9位等，构成一个字符（一般都是8位）。先发送</strong>最低位</strong>，最后发送<strong>最高位</strong>。</p></li><li><p>**奇偶校验位：**数据位加上这一位，可以校验数据传送的正确性。</p></li><li><p>**停止位：**它是一个字符数据的结束标志。可以是1位、1.5位、2位的高电平。</p></li></ul><p><img src="image-20231212102929836.png" alt="image-20231212102929836"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SPI深入剖析</title>
       <link href="/2023/12/06/SPI/"/>
       <url>/2023/12/06/SPI/</url>
