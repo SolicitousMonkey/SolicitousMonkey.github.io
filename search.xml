@@ -5,8 +5,8 @@
     
     <entry>
       <title>乐观锁vs悲观锁</title>
-      <link href="/2023/12/12/%E4%B9%90%E8%A7%82%E9%94%81vs%E6%82%B2%E8%A7%82%E9%94%81/"/>
-      <url>/2023/12/12/%E4%B9%90%E8%A7%82%E9%94%81vs%E6%82%B2%E8%A7%82%E9%94%81/</url>
+      <link href="/2023/11/11/%E4%B9%90%E8%A7%82%E9%94%81vs%E6%82%B2%E8%A7%82%E9%94%81/"/>
+      <url>/2023/11/11/%E4%B9%90%E8%A7%82%E9%94%81vs%E6%82%B2%E8%A7%82%E9%94%81/</url>
       
         <content type="html"><![CDATA[<p><strong>乐观锁</strong>和<strong>悲观锁</strong>是并发控制的两种不同策略，用于处理多线程或多进程环境中对共享资源的访问。它们的区别在于对资源的访问方式和对冲突的处理方式。</p><h3 id="1-乐观锁（Optimistic-Locking）：">1. 乐观锁（Optimistic Locking）：</h3><ul><li><strong>思想：</strong><ul><li>乐观锁的基本思想是假设在绝大多数情况下，冲突是不会发生的，因此在访问共享资源之前不会加锁。只有在更新时，才检查是否有冲突发生。</li></ul></li><li><strong>实现方式：</strong><ul><li>使用版本号或时间戳等机制，在读取数据的同时记录数据的版本信息。在更新数据时，检查版本号或时间戳，如果没有发生冲突，就更新数据并增加版本号。如果发生冲突，需要进行回滚或重新尝试。</li></ul></li><li><strong>优势：</strong><ul><li>适用于读多写少的场景，减少了锁的使用，提高了并发性能。</li></ul></li></ul><h3 id="2-悲观锁（Pessimistic-Locking）：">2. 悲观锁（Pessimistic Locking）：</h3><ul><li><strong>思想：</strong><ul><li>悲观锁的基本思想是假设在并发环境中总会发生冲突，因此在访问共享资源之前先加锁，确保只有一个线程能够访问。</li></ul></li><li><strong>实现方式：</strong><ul><li>使用传统的互斥锁（例如，Mutex或Semaphore）来保护共享资源，一次只允许一个线程访问。其他线程必须等待锁的释放。</li></ul></li><li><strong>优势：</strong><ul><li>适用于写多读少的场景，确保数据的一致性，但在高并发环境下可能导致性能下降。</li></ul></li></ul><h3 id="总结：">总结：</h3><ul><li><strong>选择策略：</strong><ul><li>选择乐观锁还是悲观锁通常取决于应用的性质和并发访问的模式。在一些情况下，两者也可以结合使用。</li></ul></li><li><strong>实现复杂度：</strong><ul><li>乐观锁的实现相对较复杂，需要额外的版本号或时间戳等信息；而悲观锁相对直观，但在高并发情况下可能引起性能问题。</li></ul></li><li><strong>适用场景：</strong><ul><li>乐观锁适用于读多写少的场景，而悲观锁适用于写多读少的场景。</li></ul></li></ul>]]></content>
       
@@ -24,8 +24,8 @@
     
     <entry>
       <title>原子操作与CAS浅析</title>
-      <link href="/2023/12/07/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E4%B8%8ECAS%E6%B5%85%E6%9E%90/"/>
-      <url>/2023/12/07/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E4%B8%8ECAS%E6%B5%85%E6%9E%90/</url>
+      <link href="/2023/11/11/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E4%B8%8ECAS%E6%B5%85%E6%9E%90/"/>
+      <url>/2023/11/11/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E4%B8%8ECAS%E6%B5%85%E6%9E%90/</url>
       
         <content type="html"><![CDATA[<h3 id="原子操作">原子操作</h3><p>**原子操作是指不会被线程调度机制打断的操作，保证共享资源访问是唯一的；**这种操作一旦开始，就一直运行到结束，中间不会有任何 context switch （切换到另一个线程）</p><p>一般原子操作需要CPU等硬件支持，使用硬件<strong>同步原语</strong>来实现原子操作。常用的原语有<code>CAS（compare-and-swap）</code>、<code>TES（test-and-set）</code>、<code>FAA（fetch-and-add）</code></p><h3 id="CAS">CAS</h3><p>CAS(Compare and Swap) 是并发编程中常用的一种同步原语，CAS操作是通过比较内存中的值和一个预期值，如果相等，则将一个新值存入内存中。整个操作是原子的，不会被其他线程中断。</p>]]></content>
       
@@ -43,8 +43,8 @@
     
     <entry>
       <title>Linux查找ip的几种方式</title>
-      <link href="/2023/12/07/Linux%E6%9F%A5%E6%89%BEip%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
-      <url>/2023/12/07/Linux%E6%9F%A5%E6%89%BEip%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
+      <link href="/2023/11/10/Linux%E6%9F%A5%E6%89%BEip%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
+      <url>/2023/11/10/Linux%E6%9F%A5%E6%89%BEip%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
       
         <content type="html"><![CDATA[<h3 id="1-ifconfig-命令：">1. <strong>ifconfig 命令：</strong></h3><ul><li><code>ifconfig</code> 命令用于显示和配置网络接口的信息，包括IP地址。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure><h3 id="2-ip-命令：">2. <strong>ip 命令：</strong></h3><ul><li><code>ip</code> 命令是更现代化的网络配置工具，也可以用于查看IP地址。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ip address</span><br></pre></td></tr></table></figure><h3 id="3-hostname-命令：">3. <strong>hostname 命令：</strong></h3><ul><li><code>hostname</code> 命令用于显示主机名和相应的IP地址。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hostname -I</span><br></pre></td></tr></table></figure><h3 id="4-ping-命令：">4. <strong>ping 命令：</strong></h3><ul><li><code>ping</code> 命令可以用于测试网络连通性，同时也会显示目标主机的IP地址。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ping example.com</span><br></pre></td></tr></table></figure><h3 id="5-traceroute-命令：">5. <strong>traceroute 命令：</strong></h3><ul><li><code>traceroute</code> 命令用于跟踪数据包的路由路径，显示经过的路由器和目标主机的IP地址。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">traceroute example.com</span><br></pre></td></tr></table></figure><h3 id="6-dig-命令：">6. <strong>dig 命令：</strong></h3><ul><li><code>dig</code> 命令用于查询DNS信息，包括主机名对应的IP地址。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dig example.com</span><br></pre></td></tr></table></figure><h3 id="7-nslookup-命令：">7. <strong>nslookup 命令：</strong></h3><ul><li><code>nslookup</code> 命令也用于查询DNS信息，可以查询主机名的IP地址。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nslookup example.com</span><br></pre></td></tr></table></figure><h3 id="8-cat-etc-hosts-文件：">8. <strong>cat /etc/hosts 文件：</strong></h3><ul><li><code>/etc/hosts</code> 文件包含主机名与IP地址的映射关系，可以直接查看该文件。</li></ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/hosts</span><br></pre></td></tr></table></figure>]]></content>
       
@@ -62,8 +62,8 @@
     
     <entry>
       <title>用户态vs内核态</title>
-      <link href="/2023/12/07/%E7%94%A8%E6%88%B7%E6%80%81vs%E5%86%85%E6%A0%B8%E6%80%81/"/>
-      <url>/2023/12/07/%E7%94%A8%E6%88%B7%E6%80%81vs%E5%86%85%E6%A0%B8%E6%80%81/</url>
+      <link href="/2023/11/10/%E7%94%A8%E6%88%B7%E6%80%81vs%E5%86%85%E6%A0%B8%E6%80%81/"/>
+      <url>/2023/11/10/%E7%94%A8%E6%88%B7%E6%80%81vs%E5%86%85%E6%A0%B8%E6%80%81/</url>
       
         <content type="html"><![CDATA[<p>用户态（User Mode）和内核态（Kernel Mode）是计算机操作系统中的两个不同的特权级别，用于<strong>控制程序对系统资源的访问和执行指令的权限</strong>。以下是它们的主要区别：</p><h3 id="用户态（User-Mode）：">用户态（User Mode）：</h3><ul><li><strong>权限：</strong><ul><li>在用户态，程序只能访问自己的内存空间和受限的系统资源，无法直接访问操作系统核心或硬件资源。</li></ul></li><li><strong>指令执行：</strong><ul><li>用户态程序执行普通指令，没有权限执行特权指令，例如修改页表、启动中断等。</li></ul></li><li><strong>中断和异常：</strong><ul><li>用户态程序可以触发中断和异常，但是处理这些中断和异常的代码运行在内核态。</li></ul></li></ul><h3 id="内核态（Kernel-Mode）：">内核态（Kernel Mode）：</h3><ul><li><strong>权限：</strong><ul><li>在内核态，操作系统核心拥有对系统硬件和资源的完全控制权，可以执行特权指令，访问系统关键数据结构和硬件寄存器。</li></ul></li><li><strong>指令执行：</strong><ul><li>内核态可以执行所有指令，包括特权指令，以执行对硬件和系统资源的底层控制。</li></ul></li><li><strong>中断和异常：</strong><ul><li>内核态可以处理所有中断和异常，并且可以直接访问和修改系统状态。</li></ul></li></ul><hr><h3 id="三种进入内核态的方式：">三种进入内核态的方式：</h3><ol><li>系统调用</li><li>中断</li><li>异常</li></ol><hr><h3 id="进入内核态并非进程为所欲为">进入内核态并非进程为所欲为</h3><p>尽管进入内核态赋予了程序更高的特权和更大的系统资源访问权限，但并不意味着进程可以为所欲为。</p><p>即使在内核态，<strong>进程也必须通过明确定义的接口（如系统调用）来与操作系统进行通信</strong>，而且操作系统会对这些请求进行审查和控制，以保护系统的完整性和安全性。</p>]]></content>
       
@@ -81,8 +81,8 @@
     
     <entry>
       <title>TCP&#92;UDP详解</title>
-      <link href="/2023/12/07/TCPUDP%E8%AF%A6%E8%A7%A3/"/>
-      <url>/2023/12/07/TCPUDP%E8%AF%A6%E8%A7%A3/</url>
+      <link href="/2023/11/09/TCPUDP%E8%AF%A6%E8%A7%A3/"/>
+      <url>/2023/11/09/TCPUDP%E8%AF%A6%E8%A7%A3/</url>
       
         <content type="html"><![CDATA[<h3 id="TCP">TCP</h3><img src="image-20231212113845207.png" alt="image-20231212113845207" style="zoom:80%;" /><h4 id="三次握手">三次握手</h4><ol><li><p><strong>第一步:  客户端发送SYN</strong></p><ul><li>Client将标志位SYN置为1，<strong>表示请求建立连接</strong>。</li><li>客户端还选择一个初始序列号（ISN），用于后续的数据传输。</li></ul></li><li><p><strong>第二步：服务器回应SYN-ACK</strong></p><ul><li>服务器收到客户端的SYN后，返回一个带有SYN和ACK标志位的TCP报文，<strong>表示接受连接请求</strong>，并确认客户端的初始序列号。</li><li>服务器也选择一个初始序列号，用于服务器到客户端的数据传输。</li></ul></li><li><p><strong>第三步：客户端发送ACK</strong></p><ul><li>客户端收到服务器的SYN-ACK后，向服务器发送一个带有ACK标志位的TCP报文，<strong>表示确认连接建立。</strong></li><li>此时，双方的连接已成功建立，可以开始进行数据传输。</li></ul></li></ol><h4 id="四次挥手">四次挥手</h4><ol><li><strong>第一步 - 客户端发送FIN：</strong><ul><li>客户端在数据传输完成后，发送一个带有FIN标志位的TCP报文，表示数据传输结束。</li></ul></li><li><strong>第二步 - 服务器回应ACK：</strong><ul><li>服务器收到客户端的FIN后，发送一个带有ACK标志位的TCP报文，确认收到客户端的关闭请求。</li></ul></li><li><strong>第三步 - 服务器发送FIN：</strong><ul><li>服务器在准备关闭连接时，发送一个带有FIN标志位的TCP报文，表示服务器也准备关闭连接。</li></ul></li><li><strong>第四步 - 客户端回应ACK：</strong><ul><li>客户端收到服务器的FIN后，发送一个带有ACK标志位的TCP报文，确认收到服务器的关闭请求。</li><li>此时，连接完全关闭，双方都进入CLOSED状态。</li></ul></li></ol><hr><h3 id="UDP">UDP</h3><ul><li>无连接：只知道对端的IP和端口号就可以发送，不需要实现建立连接。</li><li>不可靠：**没有确认机制， 没有重传机制。**如果因为网络故障该段无法发到对方， UDP协议层也不会给应用层返回任何错误信息。</li><li>面向数据报： 应用层交给UDP多长的报文， UDP原样发送既不会拆分，也不会合并。如果发送端调用一次<code>sendto</code>, 发送100个字节, 那么接收端也必须调用对应的一次<code>recvfrom</code>, 接收100个 字节，而不能循环调用10次<code>recvfrom</code>, 每次接收10个字节。<strong>所以UDP不能够灵活的控制读写数据的次数和数量。</strong></li></ul>]]></content>
       
@@ -100,8 +100,8 @@
     
     <entry>
       <title>同步与异步</title>
-      <link href="/2023/12/07/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/"/>
-      <url>/2023/12/07/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/</url>
+      <link href="/2023/11/09/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/"/>
+      <url>/2023/11/09/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/</url>
       
         <content type="html"><![CDATA[<h3 id="同步与异步">同步与异步</h3><p><strong>同步</strong>（即阻塞模式）：<strong>同步通信的双方需要频率一致的时钟。</strong>（如IIC，SPI）</p><p><strong>异步</strong>（即非阻塞模式）：<strong>异步通信的双方使用各自的时钟</strong>（如UART），接收方是通过识别数据包中的起始位和结束位来实现信息同步的。</p>]]></content>
       
@@ -119,8 +119,8 @@
     
     <entry>
       <title>UART深入剖析</title>
-      <link href="/2023/12/07/UART%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90/"/>
-      <url>/2023/12/07/UART%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90/</url>
+      <link href="/2023/11/09/UART%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90/"/>
+      <url>/2023/11/09/UART%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90/</url>
       
         <content type="html"><![CDATA[<h3 id="UART深入剖析">UART深入剖析</h3><p><strong>UART</strong>是一种串行、异步、全双工的通信协议。</p><p>UART由三根数据线构成：TXRXGND</p><ul><li><p>**空闲位：**空闲状态时信号线为高电平</p></li><li><p>**起始位：**发送方先发出低电平，表示传输字符的开始。</p></li><li><p><strong>数据位：<strong>起始位之后就是我们所要传输的数据，数据位可以是5、6、7、8，9位等，构成一个字符（一般都是8位）。先发送</strong>最低位</strong>，最后发送<strong>最高位</strong>。</p></li><li><p>**奇偶校验位：**数据位加上这一位，可以校验数据传送的正确性。</p></li><li><p>**停止位：**它是一个字符数据的结束标志。可以是1位、1.5位、2位的高电平。</p></li></ul><p><img src="image-20231212102929836.png" alt="image-20231212102929836"></p>]]></content>
       
@@ -138,8 +138,8 @@
     
     <entry>
       <title>SPI深入剖析</title>
-      <link href="/2023/12/06/SPI/"/>
-      <url>/2023/12/06/SPI/</url>
+      <link href="/2023/11/08/SPI/"/>
+      <url>/2023/11/08/SPI/</url>
       
         <content type="html"><![CDATA[<h4 id=""></h4><h3 id="SPI深入剖析">SPI深入剖析</h3><ul><li><p>SPI是同步通信协议</p></li><li><p>SPI接口有4条数据线：SCKSSMOSI　MISO</p></li></ul><h4 id="SPI-通信流程"><strong>SPI 通信流程</strong></h4><p>主设备选通一个或多个从设备，将 SS 线拉低，以确定通信目标。</p><p>主设备通过 SCLK 线产生时钟信号，驱动数据在 MOSI 上发送给从设备。</p><p>从设备根据时钟信号，在 MISO 上将响应数据返回给主设备。</p><p>通信完成后，主设备将 SS 线拉高，释放从设备。</p><h4 id="时钟极性（CPOL）与时钟相位（CPHA）">时钟极性（CPOL）与时钟相位（CPHA）</h4><p>SPI通信可以配置为不同的时钟极性和相位。</p><p>时钟极性定义时钟在空闲状态时的电平</p><ul><li>如果CPOL= 0，串行同步时钟的空闲状态为低电平；</li><li>如果CPOL= 1，串行同步时钟的空闲状态为高电平。</li></ul><p>时钟相位定义数据采样的时机</p><ul><li><p>如果CPHA= 0，在串行同步时钟的第一个跳变沿（上升或下降）数据被采样；</p></li><li><p>如果CPHA = 1，在串行同步时钟的第二个跳变沿（上升或下降）数据被采样。</p></li></ul><p><img src="image-20231211102038775.png" alt="image-20231211102038775"></p>]]></content>
       
@@ -157,8 +157,8 @@
     
     <entry>
       <title>IIC深入剖析</title>
-      <link href="/2023/12/06/IIC/"/>
-      <url>/2023/12/06/IIC/</url>
+      <link href="/2023/11/08/IIC/"/>
+      <url>/2023/11/08/IIC/</url>
       
         <content type="html"><![CDATA[<h3 id="I2C总线与I2C通信协议的区别">I2C总线与I2C通信协议的区别</h3><ul><li><p><strong>I2C总线是硬件概念：</strong> I2C总线是<strong>物理连接设备的电缆和线路</strong>。它提供了设备之间进行串行通信的基础结构。</p></li><li><p><strong>I2C协议是通信规则：</strong> I2C协议定义了在I2C总线上设备之间如何进行<strong>通信的规则</strong>。它规定了数据的传输格式、起始和停止条件、时钟频率等。</p></li></ul><h3 id="IIC详解">IIC详解</h3><p>IIC是多主机的半双工同步通信协议，<strong>数据线SDA</strong>和<strong>时钟线SCL</strong>构成。</p><blockquote><ol><li>各设备连接到总线的输出端必须是<strong>开漏输出</strong>或集电极开路输出的结构</li><li>在任意时刻只能有一个主控</li></ol></blockquote><p>空闲状态，上拉电阻使SDA和SCL信号线同时处于高电平；</p><p>由于**”线与“**逻辑，I2C总线上任意器件输出低电平都会使相应总线上的信号线变低；</p><h4 id="开始位和停止位">开始位和停止位</h4><p>当SCL 稳定在高电平时，SDA 由高到低的变化将产生一个开始位，而由低到高的变化，则产生一个停止位。</p><p><img src="image-20231211210806975.png" alt="image-20231211210806975"></p><ul><li>开始位和停止位都由I2C 主设备产生。</li></ul><p>在选择从设备时，如果从设备采用7 位地址，则主设备在发起传输过程前，需先发送1 字节的地址信息，前7 位为设备地址，最后1 位为读写标志。之后，每次传输的数据也是1字节，从MSB 开始传输。</p><p>每个字节传完后，在SCL的第9个上升沿到来之前，接收方应该发出1个ACK 位。</p><blockquote><ol><li><p>SCL 上的时钟脉冲由I2C主控方发出</p></li><li><p>在第8个时钟周期之后，主控方应该释放<strong>SDA</strong>。(因为要让给从机响应ACK)</p></li></ol></blockquote><p><img src="image-20231211211114744.png" alt="image-20231211211114744"></p>]]></content>
       
@@ -176,8 +176,8 @@
     
     <entry>
       <title>在Windows使用VSCode搭建嵌入式Linux开发环境</title>
-      <link href="/2023/12/05/%E5%9C%A8Windows%E4%BD%BF%E7%94%A8VSCode%E6%90%AD%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8FLinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
-      <url>/2023/12/05/%E5%9C%A8Windows%E4%BD%BF%E7%94%A8VSCode%E6%90%AD%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8FLinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
+      <link href="/2023/11/07/%E5%9C%A8Windows%E4%BD%BF%E7%94%A8VSCode%E6%90%AD%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8FLinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
+      <url>/2023/11/07/%E5%9C%A8Windows%E4%BD%BF%E7%94%A8VSCode%E6%90%AD%E5%BB%BA%E5%B5%8C%E5%85%A5%E5%BC%8FLinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
       
         <content type="html"><![CDATA[<div class="row">    <embed src="/pdf/在Windows使用VSCode搭建嵌入式Linux开发环境.pdf" width="100%" height="550" type="application/pdf"></div>]]></content>
       
