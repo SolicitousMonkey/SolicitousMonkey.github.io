@@ -4,9 +4,47 @@
   
     
     <entry>
+      <title>用户态vs内核态</title>
+      <link href="/2023/12/07/%E7%94%A8%E6%88%B7%E6%80%81vs%E5%86%85%E6%A0%B8%E6%80%81/"/>
+      <url>/2023/12/07/%E7%94%A8%E6%88%B7%E6%80%81vs%E5%86%85%E6%A0%B8%E6%80%81/</url>
+      
+        <content type="html"><![CDATA[<p>用户态（User Mode）和内核态（Kernel Mode）是计算机操作系统中的两个不同的特权级别，用于<strong>控制程序对系统资源的访问和执行指令的权限</strong>。以下是它们的主要区别：</p><h3 id="用户态（User-Mode）：">用户态（User Mode）：</h3><ul><li><strong>权限：</strong><ul><li>在用户态，程序只能访问自己的内存空间和受限的系统资源，无法直接访问操作系统核心或硬件资源。</li></ul></li><li><strong>指令执行：</strong><ul><li>用户态程序执行普通指令，没有权限执行特权指令，例如修改页表、启动中断等。</li></ul></li><li><strong>中断和异常：</strong><ul><li>用户态程序可以触发中断和异常，但是处理这些中断和异常的代码运行在内核态。</li></ul></li></ul><h3 id="内核态（Kernel-Mode）：">内核态（Kernel Mode）：</h3><ul><li><strong>权限：</strong><ul><li>在内核态，操作系统核心拥有对系统硬件和资源的完全控制权，可以执行特权指令，访问系统关键数据结构和硬件寄存器。</li></ul></li><li><strong>指令执行：</strong><ul><li>内核态可以执行所有指令，包括特权指令，以执行对硬件和系统资源的底层控制。</li></ul></li><li><strong>中断和异常：</strong><ul><li>内核态可以处理所有中断和异常，并且可以直接访问和修改系统状态。</li></ul></li></ul><hr><h3 id="三种进入内核态的方式：">三种进入内核态的方式：</h3><ol><li>系统调用</li><li>中断</li><li>异常</li></ol><hr><h3 id="进入内核态并非进程为所欲为">进入内核态并非进程为所欲为</h3><p>尽管进入内核态赋予了程序更高的特权和更大的系统资源访问权限，但并不意味着进程可以为所欲为。</p><p>即使在内核态，<strong>进程也必须通过明确定义的接口（如系统调用）来与操作系统进行通信</strong>，而且操作系统会对这些请求进行审查和控制，以保护系统的完整性和安全性。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>TCP&#92;UDP详解</title>
+      <link href="/2023/12/07/TCPUDP%E8%AF%A6%E8%A7%A3/"/>
+      <url>/2023/12/07/TCPUDP%E8%AF%A6%E8%A7%A3/</url>
+      
+        <content type="html"><![CDATA[<h3 id="TCP">TCP</h3><img src="image-20231212113845207.png" alt="image-20231212113845207" style="zoom:80%;" /><h4 id="三次握手">三次握手</h4><ol><li><p><strong>第一步:  客户端发送SYN</strong></p><ul><li>Client将标志位SYN置为1，<strong>表示请求建立连接</strong>。</li><li>客户端还选择一个初始序列号（ISN），用于后续的数据传输。</li></ul></li><li><p><strong>第二步：服务器回应SYN-ACK</strong></p><ul><li>服务器收到客户端的SYN后，返回一个带有SYN和ACK标志位的TCP报文，<strong>表示接受连接请求</strong>，并确认客户端的初始序列号。</li><li>服务器也选择一个初始序列号，用于服务器到客户端的数据传输。</li></ul></li><li><p><strong>第三步：客户端发送ACK</strong></p><ul><li>客户端收到服务器的SYN-ACK后，向服务器发送一个带有ACK标志位的TCP报文，<strong>表示确认连接建立。</strong></li><li>此时，双方的连接已成功建立，可以开始进行数据传输。</li></ul></li></ol><h4 id="四次挥手">四次挥手</h4><ol><li><strong>第一步 - 客户端发送FIN：</strong><ul><li>客户端在数据传输完成后，发送一个带有FIN标志位的TCP报文，表示数据传输结束。</li></ul></li><li><strong>第二步 - 服务器回应ACK：</strong><ul><li>服务器收到客户端的FIN后，发送一个带有ACK标志位的TCP报文，确认收到客户端的关闭请求。</li></ul></li><li><strong>第三步 - 服务器发送FIN：</strong><ul><li>服务器在准备关闭连接时，发送一个带有FIN标志位的TCP报文，表示服务器也准备关闭连接。</li></ul></li><li><strong>第四步 - 客户端回应ACK：</strong><ul><li>客户端收到服务器的FIN后，发送一个带有ACK标志位的TCP报文，确认收到服务器的关闭请求。</li><li>此时，连接完全关闭，双方都进入CLOSED状态。</li></ul></li></ol><hr><h3 id="UDP">UDP</h3><ul><li>无连接：只知道对端的IP和端口号就可以发送，不需要实现建立连接。</li><li>不可靠：**没有确认机制， 没有重传机制。**如果因为网络故障该段无法发到对方， UDP协议层也不会给应用层返回任何错误信息。</li><li>面向数据报： 应用层交给UDP多长的报文， UDP原样发送既不会拆分，也不会合并。如果发送端调用一次<code>sendto</code>, 发送100个字节, 那么接收端也必须调用对应的一次<code>recvfrom</code>, 接收100个 字节，而不能循环调用10次<code>recvfrom</code>, 每次接收10个字节。<strong>所以UDP不能够灵活的控制读写数据的次数和数量。</strong></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>同步与异步</title>
-      <link href="/2023/12/12/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/"/>
-      <url>/2023/12/12/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/</url>
+      <link href="/2023/12/07/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/"/>
+      <url>/2023/12/07/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/</url>
       
         <content type="html"><![CDATA[<h3 id="同步与异步">同步与异步</h3><p><strong>同步</strong>（即阻塞模式）：<strong>同步通信的双方需要频率一致的时钟。</strong>（如IIC，SPI）</p><p><strong>异步</strong>（即非阻塞模式）：<strong>异步通信的双方使用各自的时钟</strong>（如UART），接收方是通过识别数据包中的起始位和结束位来实现信息同步的。</p>]]></content>
       
