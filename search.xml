@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>设备树浅析</title>
+      <link href="/2023/12/13/%E8%AE%BE%E5%A4%87%E6%A0%91%E6%B5%85%E6%9E%90/"/>
+      <url>/2023/12/13/%E8%AE%BE%E5%A4%87%E6%A0%91%E6%B5%85%E6%9E%90/</url>
+      
+        <content type="html"><![CDATA[<h3 id="介绍">介绍</h3><p>设备树（Device Tree）是一种描述硬件设备信息的数据结构，它独立于具体的硬件架构和操作系统，为系统中的硬件组件提供了统一的描述方式。</p><h3 id="DTS、-DTC和DTB的关系">DTS、 DTC和DTB的关系</h3><ul><li>(1) DTS（device tree source）：.dts文件是设备树的源文件。由于一个SoC可能对应多个设备，这些.dst文件可能包含很多共同的部分，共同的部分一般被提炼为一个 .dtsi 文件，这个文件相当于C语言的头文件。</li><li>(2) DTC：DTC是将.dts编译为.dtb的工具，相当于gcc。</li><li>(3) DTB：.dtb文件是 .dts 被 DTC 编译后的二进制格式的设备树文件，它可以被linux内核解析。</li></ul><h3 id="设备节点">设备节点</h3><p>命名格式</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">node-name@unit-address</span><br></pre></td></tr></table></figure><h3 id="设备节点的标准属性">设备节点的标准属性</h3><h4 id="compatible-属性">compatible 属性</h4><ul><li>指定节点所代表的设备类型，用于将设备和驱动绑定起来</li></ul><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">compatible = <span class="string">&quot;fsl,mpc8641&quot;</span>, <span class="string">&quot;ns16550&quot;</span>;</span><br></pre></td></tr></table></figure><h4 id="model-属性">model 属性</h4><ul><li>描述设备模块信息，比如名字什么的，例如：</li></ul><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">model = <span class="string">&quot;Samsung S3C2416 SoC&quot;</span>;</span><br></pre></td></tr></table></figure><h4 id="reg-属性">reg 属性</h4><ul><li>用于指定设备的地址范围或偏移。例如：一个设备有两个寄存器块，一个的地址是0x3000，占据32字节；另一个的地址是0xFE00，占据256字节，表示如下：</li></ul><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">reg = &lt;<span class="number">0x3000</span> <span class="number">0x20</span> <span class="number">0xFE00</span> <span class="number">0x100</span>&gt;;</span><br></pre></td></tr></table></figure><h4 id="驱动匹配">驱动匹配</h4><p>Linux内核的设备树子系统会在启动时解析设备树，将设备信息传递给相应的设备驱动。设备树中的<code>compatible</code>属性用于与设备驱动进行匹配。</p><p>设备驱动中通常使用<code>of_match_table</code>结构指定设备树中的<code>compatible</code>属性与驱动匹配时的处理逻辑。</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">of_device_id</span> <span class="title">my_device_of_match</span>[] =</span> &#123;</span><br><span class="line">    &#123; .compatible = <span class="string">&quot;my_device&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="comment">/* Sentinel */</span> &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">MODULE_DEVICE_TABLE(of, my_device_of_match);</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">platform_driver</span> <span class="title">my_device_driver</span> =</span> &#123;</span><br><span class="line">    .driver = &#123;</span><br><span class="line">        .name = <span class="string">&quot;my_device&quot;</span>,</span><br><span class="line">        .of_match_table = my_device_of_match,</span><br><span class="line">    &#125;,</span><br><span class="line">    .probe = my_device_probe,</span><br><span class="line">    .remove = my_device_remove,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module_platform_driver(my_device_driver);</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>孤儿进程、僵尸进程、守护进程</title>
+      <link href="/2023/11/14/%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B%E3%80%81%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E3%80%81%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/"/>
+      <url>/2023/11/14/%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B%E3%80%81%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E3%80%81%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<p><strong>孤儿进程、僵尸进程和守护进程</strong>是与进程生命周期相关的概念。</p><h3 id="1-孤儿进程（Orphan-Process）：">1. 孤儿进程（Orphan Process）：</h3><ul><li><strong>定义：</strong> 孤儿进程是指其父进程退出或被终止，但是它自己仍在运行的进程。</li><li><strong>特征：</strong><ul><li>孤儿进程会被 init 进程（PID为1的进程，通常是操作系统的第一个进程）接管。</li><li>当父进程退出时，孤儿进程的父进程会变为 init 进程。</li></ul></li><li><strong>原因：</strong><ul><li>孤儿进程的产生通常是父进程没有及时等待子进程的结束状态，导致子进程成为孤儿。</li></ul></li></ul><h3 id="2-僵尸进程（Zombie-Process）：">2. 僵尸进程（Zombie Process）：</h3><ul><li><strong>定义：</strong> 僵尸进程是指一个进程已经执行完毕，但其父进程尚未对其进行善后处理，即尚未调用 <code>wait</code> 或 <code>waitpid</code> 等系统调用来获取子进程的结束状态。</li><li><strong>特征：</strong><ul><li>僵尸进程在进程表中仍然存在，但已经没有可执行的代码。</li><li>僵尸进程的进程状态（Process Status）为 Z（表示僵尸）。</li></ul></li><li><strong>原因：</strong><ul><li>父进程没有及时回收子进程的结束状态，可能是因为父进程没有合适的等待子进程的机制。</li></ul></li></ul><h3 id="3-守护进程（Daemon-Process）：">3. 守护进程（Daemon Process）：</h3><ul><li><strong>定义：</strong> 守护进程是一种在后台运行的进程，通常独立于控制终端，并且通常用于执行一些系统任务或服务。</li><li><strong>特征：</strong><ul><li>守护进程通常在系统启动时启动，并且一直运行，直到系统关闭或手动停止。</li><li>守护进程通常与用户交互较少，没有控制终端。</li></ul></li><li><strong>用途：</strong><ul><li>守护进程常用于提供系统服务，如网络服务、日志服务等。</li><li>守护进程经常以超级用户（root）的身份运行。</li></ul></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 驱动开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>进程间通信</title>
       <link href="/2023/11/13/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"/>
       <url>/2023/11/13/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</url>
@@ -27,7 +65,7 @@
       <link href="/2023/11/12/%E8%BF%9B%E7%A8%8Bvs%E7%BA%BF%E7%A8%8B/"/>
       <url>/2023/11/12/%E8%BF%9B%E7%A8%8Bvs%E7%BA%BF%E7%A8%8B/</url>
       
-        <content type="html"><![CDATA[<h4 id="进程和线程">进程和线程</h4><h5 id="进程">进程</h5><ul><li><p>**定义：**进程是操作系统分配资源的基本单位，是程序在执行过程中的一个实例。</p></li><li><p>**资源拥有：**进程有自己独立的内存空间、文件句柄等资源，进程间通信需要通过进程间通信（IPC）机制。</p></li><li><p>**切换开销：**进程切换的开销相对较大，因为它需要保存和恢复整个进程的上下文。</p></li><li><p>**独立性：**进程是相互独立的，一个进程的崩溃通常不会影响其他进程。</p></li><li><p>**适用场景：**适用于多个独立任务的并发执行，进程提供更强的隔离性。</p></li></ul><h5 id="线程">线程</h5><ul><li><p><strong>定义：<strong>线程是进程中的一个独立执行单元，是</strong>程序执行的最小单位</strong>。一个进程可以包含多个线程，它们共享进程的资源，但有各自的执行序列。</p></li><li><p>**资源拥有：**线程共享进程的资源，包括相同的内存空间、文件句柄等。线程间通信可以通过共享内存等方式。</p></li><li><p>**切换开销：**线程切换的开销相对较小，因为它们共享相同的地址空间，切换时只需要保存和恢复寄存器和栈等少量信息。</p></li><li><p>**独立性：**线程是共享相同进程的资源的执行单元，一个线程的问题可能会影响到整个进程。</p></li><li><p>**适用场景：**适用于在同一任务中需要并发执行的情况，线程共享相同的上下文，更容易实现通信。</p></li></ul>]]></content>
+        <content type="html"><![CDATA[<h4 id="进程和线程的定义">进程和线程的定义</h4><h5 id="进程">进程</h5><p>进程是操作系统<strong>分配资源的基本单位</strong>，是程序在执行过程中的一个实例。</p><h5 id="线程">线程</h5><p>线程是进程中的一个独立执行单元，是<strong>程序执行的最小单位</strong>。一个进程可以包含多个线程，它们共享进程的资源，但有各自的执行序列。</p><hr><h4 id="进程和线程的定义-v2">进程和线程的定义</h4><h5 id="进程-v2">进程</h5><ul><li><p><strong>资源拥有</strong>：进程有自己的<strong>独立地址空间</strong>。每启动一个进程，系统就会为它分配地址空间，建立数据表来维护代码段、堆栈段和数据段，这种操作非常昂贵。进程间通信需要通过进程间通信（IPC）机制。</p></li><li><p><strong>切换开销</strong>：进程切换的开销相对较大，因为它需要保存和恢复整个进程的上下文。</p></li><li><p><strong>独立性</strong>：进程是相互独立的，一个进程的崩溃通常不会影响其他进程。</p></li><li><p><strong>适用场景</strong>：适用于多个独立任务的并发执行，进程提供更强的隔离性。</p></li></ul><h5 id="线程-v2">线程</h5><ul><li><p><strong>资源拥有</strong>：而线程是<strong>共享进程中的数据</strong>，使用相同的地址空间因此，CPU切换一个线程的花费远比进程小很多，同时创建一个线程的开销也比进程小很多。</p></li><li><p><strong>切换开销</strong>：线程切换的开销相对较小，因为它们共享相同的地址空间，切换时只需要保存和恢复寄存器和栈等少量信息。</p></li><li><p><strong>独立性</strong>：线程是共享相同进程的资源的执行单元，一个线程的问题可能会影响到整个进程。</p></li><li><p><strong>适用场景</strong>：适用于在同一任务中需要并发执行的情况，线程共享相同的上下文，更容易实现通信。</p></li></ul>]]></content>
       
       
       
@@ -160,7 +198,7 @@
       <link href="/2023/11/09/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/"/>
       <url>/2023/11/09/%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5/</url>
       
-        <content type="html"><![CDATA[<h4 id="同步与异步">同步与异步</h4><h5 id="同步">同步</h5><p>在同步操作中，一个任务的执行会等待另一个任务完成，这两个任务之间存在依赖关系。调用方会阻塞等待结果。</p><blockquote><p>同步通信的双方需要频率一致的时钟。（如IIC，SPI）</p></blockquote><h5 id="异步">异步</h5><p>在异步操作中，任务的执行不会等待另一个任务完成。调用方不会阻塞，而是继续执行其他任务。通常通过回调、Promise等机制来处理异步操作的结果。</p><blockquote><p>异步通信的双方使用各自的时钟（如UART）。</p></blockquote><hr><h4 id="阻塞和非阻塞">阻塞和非阻塞</h4><h5 id="阻塞">阻塞</h5><p>在一个任务执行的过程中，如果需要等待某个事件完成，那么整个任务就会阻塞，等待这个事件的完成。</p><h5 id="非阻塞">非阻塞</h5><p>在一个任务执行的过程中，如果遇到需要等待的事件，任务会继续执行而不是等待，通过轮询或回调等方式检查事件是否完成。</p><hr><h4 id="同步-阻塞">同步 != 阻塞</h4><h5 id="同步和阻塞">同步和阻塞</h5><p>同步操作可能导致阻塞，因为调用方需要等待操作完成。</p><h5 id="同步和非阻塞">同步和非阻塞</h5><p>同步操作也可以是非阻塞的，例如，在进行同步I/O操作时，调用方可以继续执行其他任务而不等待I/O的完成。</p><hr><h4 id="异步-非阻塞">异步 != 非阻塞</h4><h5 id="异步和阻塞：">异步和阻塞：</h5><p>异步操作可以是阻塞的，例如，在异步I/O操作中，调用方可以等待I/O的完成。</p><h5 id="异步和非阻塞：">异步和非阻塞：</h5><p>异步操作通常是非阻塞的，因为调用方不需要等待操作的完成，而是通过回调等方式处理操作完成的结果。</p><hr><h4 id="举个例子">举个例子</h4><p>老张爱喝茶，废话不说，煮开水。</p><p>出场人物：老张，水壶两把（普通水壶，简称水壶；会响的水壶，简称响水壶）。</p><ol><li>老张把水壶放到火上，立等水开。（同步阻塞）老张觉得自己有点傻。</li><li>老张把水壶放到火上，去客厅看电视，时不时去厨房看看水开没有。（同步非阻塞）。</li><li>老张还是觉得自己有点傻，于是变高端了，买了把会响笛的那种水壶。水开之后，能大声发出嘀~~~~的噪音。</li><li>老张把响水壶放到火上，立等水开。（异步阻塞）。</li><li>老张觉得这样傻等意义不大，老张把响水壶放到火上，去客厅看电视，水壶响之前不再去看它了，响了再去拿壶。（异步非阻塞）。</li></ol><ul><li>所谓同步异步，只是对于水壶而言。普通水壶，同步；响水壶，异步。虽然都能干活，但响水壶可以在自己完工之后，提示老张水开了。这是普通水壶所不能及的。同步只能让调用者去轮询自己（情况2中），造成老张效率的低下。</li><li>所谓阻塞非阻塞，仅仅对于老张而言。立等的老张，阻塞；看电视的老张，非阻塞。<br>情况1和情况3中老张就是阻塞的，媳妇喊他都不知道。虽然3中响水壶是异步的，可对于立等的老张没有太大的意义。所以一般异步是配合非阻塞使用的，这样才能发挥异步的效用。</li></ul>]]></content>
+        <content type="html"><![CDATA[<h4 id="同步与异步">同步与异步</h4><h5 id="同步">同步</h5><p>在同步操作中，一个任务的执行会等待另一个任务完成，这两个任务之间存在依赖关系。调用方会阻塞等待结果。</p><blockquote><p>同步通信的双方需要频率一致的时钟。（如IIC，SPI）</p></blockquote><h5 id="异步">异步</h5><p>在异步操作中，任务的执行不会等待另一个任务完成。调用方不会阻塞，而是继续执行其他任务。通常通过回调、Promise等机制来处理异步操作的结果。</p><blockquote><p>异步通信的双方使用各自的时钟（如UART）。</p></blockquote><hr><h4 id="阻塞和非阻塞">阻塞和非阻塞</h4><h5 id="阻塞">阻塞</h5><p>在一个任务执行的过程中，如果需要等待某个事件完成，那么整个任务就会阻塞，等待这个事件的完成。</p><h5 id="非阻塞">非阻塞</h5><p>在一个任务执行的过程中，如果遇到需要等待的事件，任务会继续执行而不是等待，通过轮询或回调等方式检查事件是否完成。</p><hr><h4 id="同步-阻塞">同步 != 阻塞</h4><h5 id="同步和阻塞">同步和阻塞</h5><p>同步操作可能导致阻塞，因为调用方需要等待操作完成。</p><h5 id="同步和非阻塞">同步和非阻塞</h5><p>同步操作也可以是非阻塞的，例如，在进行同步I/O操作时，调用方可以继续执行其他任务而不等待I/O的完成。</p><blockquote><p>考虑一个进行同步I/O操作的场景，如文件读取。在传统的同步I/O模型中，当进行文件读取时，程序会一直等待文件读取完成后再执行下一步操作，这是典型的阻塞操作。</p><p>但如果使用非阻塞的同步I/O模型，调用方可以发起文件读取请求，然后继续执行其他任务，而不必等待文件读取完成。在后续需要读取文件的数据时，程序可以检查文件读取操作是否完成，如果完成则获取数据，否则继续执行其他任务。这种方式允许程序在等待I/O完成的同时继续执行其他操作，提高了系统的并发性。</p></blockquote><p><strong>同步操作确保了任务的顺序性和可预测性。</strong></p><p><strong>阻塞操作中，程序会停滞等待直到某个条件满足。</strong></p><hr><h4 id="异步-非阻塞">异步 != 非阻塞</h4><h5 id="异步和阻塞：">异步和阻塞：</h5><p>异步操作可以是阻塞的，例如，在异步I/O操作中，调用方可以等待I/O的完成。</p><h5 id="异步和非阻塞：">异步和非阻塞：</h5><p>异步操作通常是非阻塞的，因为调用方不需要等待操作的完成，而是通过回调等方式处理操作完成的结果。</p><hr><h4 id="举个例子">举个例子</h4><p>老张爱喝茶，废话不说，煮开水。</p><p>出场人物：老张，水壶两把（普通水壶，简称水壶；会响的水壶，简称响水壶）。</p><ol><li>老张把水壶放到火上，立等水开。（同步阻塞）老张觉得自己有点傻。</li><li>老张把水壶放到火上，去客厅看电视，时不时去厨房看看水开没有。（同步非阻塞）。</li><li>老张还是觉得自己有点傻，于是变高端了，买了把会响笛的那种水壶。水开之后，能大声发出嘀~~~~的噪音。</li><li>老张把响水壶放到火上，立等水开。（异步阻塞）。</li><li>老张觉得这样傻等意义不大，老张把响水壶放到火上，去客厅看电视，水壶响之前不再去看它了，响了再去拿壶。（异步非阻塞）。</li></ol><ul><li>所谓同步异步，只是对于水壶而言。普通水壶，同步；响水壶，异步。虽然都能干活，但响水壶可以在自己完工之后，提示老张水开了。这是普通水壶所不能及的。同步只能让调用者去轮询自己（情况2中），造成老张效率的低下。</li><li>所谓阻塞非阻塞，仅仅对于老张而言。立等的老张，阻塞；看电视的老张，非阻塞。<br>情况1和情况3中老张就是阻塞的，媳妇喊他都不知道。虽然3中响水壶是异步的，可对于立等的老张没有太大的意义。所以一般异步是配合非阻塞使用的，这样才能发挥异步的效用。</li></ul>]]></content>
       
       
       
