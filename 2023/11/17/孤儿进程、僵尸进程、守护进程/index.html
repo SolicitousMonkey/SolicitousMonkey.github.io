@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="孤儿进程、僵尸进程、守护进程"><meta name="keywords" content="驱动开发"><meta name="author" content="郑伟铭"><meta name="copyright" content="郑伟铭"><title>孤儿进程、僵尸进程、守护进程 | zwm's Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '6.3.0'
+} </script><meta name="generator" content="Hexo 6.3.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B%EF%BC%88Orphan-Process%EF%BC%89%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">1. 孤儿进程（Orphan Process）：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%EF%BC%88Zombie-Process%EF%BC%89%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">2. 僵尸进程（Zombie Process）：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%EF%BC%88Daemon-Process%EF%BC%89%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">3. 守护进程（Daemon Process）：</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="img/avatar.jpg"></div><div class="author-info__name text-center">郑伟铭</div><div class="author-info__description text-center">研究方向：深度强化学习，需求响应优化；学习方向：驱动开发</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/SolicitousMonkey">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">28</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">3</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">zwm's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">主页</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">标签</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">孤儿进程、僵尸进程、守护进程</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2023-11-17</time><span class="post-meta__separator">|</span><i class="fa fa-comment-o post-meta__icon" aria-hidden="true"></i><a href="/2023/11/17/%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B%E3%80%81%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E3%80%81%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/#disqus_thread"><span class="disqus-comment-count" data-disqus-identifier="2023/11/17/孤儿进程、僵尸进程、守护进程/"></span></a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p><strong>孤儿进程、僵尸进程和守护进程</strong>是与进程生命周期相关的概念。</p>
+<h3 id="1-孤儿进程（Orphan-Process）：">1. 孤儿进程（Orphan Process）：</h3>
+<ul>
+<li><strong>定义：</strong> 孤儿进程是指其父进程退出或被终止，但是它自己仍在运行的进程。</li>
+<li><strong>特征：</strong>
+<ul>
+<li>孤儿进程会被 init 进程（PID为1的进程，通常是操作系统的第一个进程）接管。</li>
+<li>当父进程退出时，孤儿进程的父进程会变为 init 进程。</li>
+</ul>
+</li>
+<li><strong>原因：</strong>
+<ul>
+<li>孤儿进程的产生通常是父进程没有及时等待子进程的结束状态，导致子进程成为孤儿。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-僵尸进程（Zombie-Process）：">2. 僵尸进程（Zombie Process）：</h3>
+<ul>
+<li><strong>定义：</strong> 僵尸进程是指一个进程已经执行完毕，但其父进程尚未对其进行善后处理，即尚未调用 <code>wait</code> 或 <code>waitpid</code> 等系统调用来获取子进程的结束状态。</li>
+<li><strong>特征：</strong>
+<ul>
+<li>僵尸进程在进程表中仍然存在，但已经没有可执行的代码。</li>
+<li>僵尸进程的进程状态（Process Status）为 Z（表示僵尸）。</li>
+</ul>
+</li>
+<li><strong>原因：</strong>
+<ul>
+<li>父进程没有及时回收子进程的结束状态，可能是因为父进程没有合适的等待子进程的机制。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-守护进程（Daemon-Process）：">3. 守护进程（Daemon Process）：</h3>
+<ul>
+<li><strong>定义：</strong> 守护进程是一种在后台运行的进程，通常独立于控制终端，并且通常用于执行一些系统任务或服务。</li>
+<li><strong>特征：</strong>
+<ul>
+<li>守护进程通常在系统启动时启动，并且一直运行，直到系统关闭或手动停止。</li>
+<li>守护进程通常与用户交互较少，没有控制终端。</li>
+</ul>
+</li>
+<li><strong>用途：</strong>
+<ul>
+<li>守护进程常用于提供系统服务，如网络服务、日志服务等。</li>
+<li>守护进程经常以超级用户（root）的身份运行。</li>
+</ul>
+</li>
+</ul>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">郑伟铭</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://solicitousmonkey.github.io/2023/11/17/孤儿进程、僵尸进程、守护进程/">https://solicitousmonkey.github.io/2023/11/17/孤儿进程、僵尸进程、守护进程/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://solicitousmonkey.github.io">zwm's Blog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/">驱动开发</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2023/11/17/%E8%AE%BE%E5%A4%87%E6%A0%91%E6%B5%85%E6%9E%90/"><i class="fa fa-chevron-left">  </i><span>设备树浅析</span></a></div><div class="next-post pull-right"><a href="/2023/11/16/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"><span>进程间通信</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'https://solicitousmonkey.github.io/2023/11/17/%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B%E3%80%81%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E3%80%81%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/';
+  this.page.identifier = '2023/11/17/孤儿进程、僵尸进程、守护进程/';
+  this.page.title = '孤儿进程、僵尸进程、守护进程';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'zwming-cn' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script><script id="dsq-count-scr" src="https://zwming-cn.disqus.com/count.js" async></script></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2023 By 郑伟铭</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
