@@ -42,6 +42,25 @@
     
     
     <entry>
+      <title>mosquitto安装/配置/使用</title>
+      <link href="/2023/11/28/mosquitto%E5%AE%89%E8%A3%85-%E9%85%8D%E7%BD%AE-%E4%BD%BF%E7%94%A8/"/>
+      <url>/2023/11/28/mosquitto%E5%AE%89%E8%A3%85-%E9%85%8D%E7%BD%AE-%E4%BD%BF%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h4 id="改配置文件mosquitto-conf">改配置文件mosquitto.conf</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">password_file /Program Files/mosquitto/pwfile.example</span><br></pre></td></tr></table></figure><h4 id="创建-添加-用户">创建/添加 用户</h4><ol><li>创建：mosquitto_passwd -c pwfile.example admin</li><li>添加：mosquitto_passwd  pwfile.example admin</li></ol><h4 id="常用的几个指令参数">常用的几个指令参数</h4><p>-c 加载指定的配置文件，即mosquitto.conf</p><p>-d 将服务放在后台执行</p><p>-p 监听指定端口的代理，并且不建议与-c选项一起使用</p><p>-v 启用详细日志模式</p><h4 id="启动mosquitto服务">启动mosquitto服务</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">mosquitto <span class="literal">-c</span> mosquitto.conf <span class="literal">-v</span> </span><br></pre></td></tr></table></figure><h4 id="订阅">订阅</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">mosquitto_sub <span class="literal">-v</span> <span class="literal">-t</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure><h4 id="发布">发布</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">mosquitto_pub <span class="literal">-t</span> topic <span class="literal">-m</span> <span class="string">&quot;Hello world!&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> MQTT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>消息队列</title>
       <link href="/2023/11/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
       <url>/2023/11/26/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
